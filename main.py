@@ -39,7 +39,7 @@ def save_mov(tipo, monto, saldo):
     with open(ARCH_MOV, "w") as f:
         json.dump(data, f)
 
-# ---------------- UI BASE ----------------
+# ---------------- DISEÑO ----------------
 base = """
 <!DOCTYPE html>
 <html>
@@ -99,15 +99,17 @@ def login():
         else:
             msg = "Datos incorrectos"
 
-    return render_template_string(base, content=f"""
-        <h2>LOGIN</h2>
-        <form method="POST">
-            <input name="user" placeholder="Usuario"><br>
-            <input name="pin" type="password" placeholder="PIN"><br>
-            <button class="green">Entrar</button>
-        </form>
-        <p>{msg}</p>
-    """)
+    contenido = f"""
+    <h2>INICIAR SESIÓN</h2>
+    <form method="POST">
+        <input name="user" placeholder="Usuario"><br>
+        <input name="pin" type="password" placeholder="PIN"><br>
+        <button class="green">Entrar</button>
+    </form>
+    <p>{msg}</p>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- MENU ----------------
 @app.route("/menu")
@@ -117,16 +119,18 @@ def menu():
 
     saldo = load_saldo()
 
-    return render_template_string(base, content=f"""
-        <h2>BANCO</h2>
-        <h1>${saldo}</h1>
+    contenido = f"""
+    <h2>BANCO</h2>
+    <h1>${saldo}</h1>
 
-        <a href="/depositar"><button class="green">Depositar</button></a>
-        <a href="/retirar"><button class="red">Retirar</button></a>
-        <a href="/tareas"><button class="blue">Tareas</button></a>
-        <a href="/historial"><button class="yellow">Historial</button></a>
-        <a href="/logout"><button>Salir</button></a>
-    """)
+    <a href="/depositar"><button class="green">Depositar</button></a>
+    <a href="/retirar"><button class="red">Retirar</button></a>
+    <a href="/tareas"><button class="blue">Tareas</button></a>
+    <a href="/historial"><button class="yellow">Historial</button></a>
+    <a href="/logout"><button>Salir</button></a>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- DEPOSITAR ----------------
 @app.route("/depositar", methods=["GET","POST"])
@@ -145,15 +149,17 @@ def depositar():
         except:
             msg = "Error"
 
-    return render_template_string(base, content=f"""
-        <h2>Depositar</h2>
-        <form method="POST">
-            <input name="monto" placeholder="Monto">
-            <button class="green">Confirmar</button>
-        </form>
-        <p>{msg}</p>
-        <a href="/menu"><button>Volver</button></a>
-    """)
+    contenido = f"""
+    <h2>Depositar</h2>
+    <form method="POST">
+        <input name="monto" placeholder="Monto">
+        <button class="green">Confirmar</button>
+    </form>
+    <p>{msg}</p>
+    <a href="/menu"><button>Volver</button></a>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- RETIRAR ----------------
 @app.route("/retirar", methods=["GET","POST"])
@@ -174,15 +180,17 @@ def retirar():
         except:
             msg = "Error"
 
-    return render_template_string(base, content=f"""
-        <h2>Retirar</h2>
-        <form method="POST">
-            <input name="monto" placeholder="Monto">
-            <button class="red">Confirmar</button>
-        </form>
-        <p>{msg}</p>
-        <a href="/menu"><button>Volver</button></a>
-    """)
+    contenido = f"""
+    <h2>Retirar</h2>
+    <form method="POST">
+        <input name="monto" placeholder="Monto">
+        <button class="red">Confirmar</button>
+    </form>
+    <p>{msg}</p>
+    <a href="/menu"><button>Volver</button></a>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- TAREAS ----------------
 @app.route("/tareas", methods=["GET","POST"])
@@ -217,14 +225,16 @@ def tareas():
         </label><br>
         """
 
-    return render_template_string(base, content=f"""
-        <h2>Tareas</h2>
-        <form method="POST">
-            {checkboxes}
-            <button class="green">Confirmar</button>
-        </form>
-        <a href="/menu"><button>Volver</button></a>
-    """)
+    contenido = f"""
+    <h2>Tareas</h2>
+    <form method="POST">
+        {checkboxes}
+        <button class="green">Confirmar</button>
+    </form>
+    <a href="/menu"><button>Volver</button></a>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- HISTORIAL ----------------
 @app.route("/historial")
@@ -235,11 +245,13 @@ def historial():
     for m in data:
         lista += f"<p>{m['hora']} | {m['tipo']} | ${m['monto']}</p>"
 
-    return render_template_string(base, content=f"""
-        <h2>Historial</h2>
-        {lista}
-        <a href="/menu"><button>Volver</button></a>
-    """)
+    contenido = f"""
+    <h2>Historial</h2>
+    {lista}
+    <a href="/menu"><button>Volver</button></a>
+    """
+
+    return render_template_string(base, content=contenido)
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
@@ -248,5 +260,6 @@ def logout():
     return redirect("/")
 
 # 🔥 IMPORTANTE PARA RENDER
-import os
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+if __name__ == "__main__":
+    import os
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
