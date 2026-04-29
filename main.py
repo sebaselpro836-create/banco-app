@@ -82,7 +82,7 @@ button {
 </head>
 <body>
 <div class="container">
-{{content}}
+{{ content | safe }}
 </div>
 </body>
 </html>
@@ -259,7 +259,7 @@ def logout():
     session.clear()
     return redirect("/")
 
-# 🔥 IMPORTANTE PARA RENDER
+# ---------------- RUN ----------------
 if __name__ == "__main__":
     import os
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
